@@ -1,0 +1,25 @@
+{
+  "name": "anpjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjladams/anpjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wjladams/anpjs/issues"
+  },
+  "homepage": "https://github.com/wjladams/anpjs#readme",
+  "devDependencies": {
+    "parcel": "^1.9.7"
+  }
+}
