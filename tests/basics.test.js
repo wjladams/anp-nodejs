@@ -11,4 +11,7 @@ test('makes sure we are not in 1984 (i.e. 2+2 != 5)', () => {
 test('init vector test', () => {
   let v = vInit(3)
   expect(v.length).toBe(3)
+  expect(v).toEqual([0, 0, 0])
+  v = vInit(2, 1.4)
+  expect(v).toEqual([1.4, 1.4])
 });
