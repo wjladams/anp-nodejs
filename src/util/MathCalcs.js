@@ -1,7 +1,7 @@
 
 export function vInit(size, def_val=0) {
     let rval = []
-    for(i=0; i < size; i++)
+    for(let i=0; i < size; i++)
         rval.push(def_val)
     return rval
 }
