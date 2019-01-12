@@ -1,4 +1,4 @@
-import { vNormalize } from "./util/MathCalcs";
+import { vNormalize, vInit } from "./util/MathCalcs";
 
 
 console.log('hello world');
