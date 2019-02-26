@@ -1,4 +1,4 @@
-import { vInit } from "../src/util/MathCalcs";
+import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen} from "../src/util/MathCalcs";
 
 test('adds 1 + 2 to equal 3', () => {
   expect(1 + 2).toBe(3);
@@ -15,3 +15,45 @@ test('init vector test', () => {
   v = vInit(2, 1.4)
   expect(v).toEqual([1.4, 1.4])
 });
+
+test('normalize vector inline', () => {
+  let v = [1, 2]
+  vNormalize(v)
+  expect(v).toEqual([1/3, 2/3])
+});
+
+test('mInit', () => {
+  let mat12 = mInit(1,2)
+  expect(mat12).toEqual([[0, 0]])
+})
+
+test('mId', () => {
+  let size=3
+  let id3 = mId(size)
+  expect(id3).toEqual([[1, 0, 0], [0, 1, 0], [0, 0 ,1]])
+})
+
+test('normalize vector not inline', () => {
+  let v = [1, 2]
+  expect(vNormalize(v, false)).toEqual([1/3, 2/3.]);
+})
+
+test('mMultVec: multiplying a matrix by a vector', () =>{
+  let v = [1, 2]
+  let m = [[1, 3], [-2, 4]]
+  let mv=mMultVec(m, v)
+  
+  expect(mv[0]).toBeCloseTo(7, 8)
+  expect(mv[1]).toBeCloseTo(6, 8)
+})
+
+test('mLargestEigen', () => {
+  let m = [[1, 2, 6], [1/2, 1, 3], [1/6, 1/3, 1]]
+  let pv = [0.6, 0.3, 0.1]
+  let eig = mLargestEigen(m)
+  for(let i=0; i<pv.length; i++) {
+    expect(eig[i]).toBeCloseTo(pv[i], 7)
+  }
+  let val = mLargestEigen(m, true)
+  expect(val).toBeCloseTo(3, 8)
+})
