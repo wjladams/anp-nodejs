@@ -1,4 +1,4 @@
-import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen} from "../src/util/MathCalcs";
+import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen, mSquareAddPos} from "../src/util/MathCalcs";
 
 test('adds 1 + 2 to equal 3', () => {
   expect(1 + 2).toBe(3);
@@ -56,4 +56,12 @@ test('mLargestEigen', () => {
   }
   let val = mLargestEigen(m, true)
   expect(val).toBeCloseTo(3, 8)
+})
+
+test('Add position to square matrix', ()=> {
+  let m = []
+  mSquareAddPos(m)
+  expect(m).toEqual([[1]])
+  mSquareAddPos(m)
+  expect(m).toEqual([[1, 0], [0, 1]])
 })

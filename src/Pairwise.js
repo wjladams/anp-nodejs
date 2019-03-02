@@ -1,17 +1,19 @@
-import {mInit, mId, mPairwise, mLargestEigen} from "../src/util/MathCalcs"
+import {mInit, mId, mPairwise, mLargestEigen, mSquareAddPos} from "../src/util/MathCalcs"
+import { Prioritizer } from "./Prioritizer";
 
-export class Pairwise {
+export class Pairwise extends Prioritizer {
     constructor(size) {
-        this.size = size
+        super(size)
         this.matrix =  mId(size)
-        this.alts = []
-        for(let i=0; i < size; i++) {
-            this.alts[i] = "Alternative "+(i+1)
-        }
     }
 
     set(row, col, val) {
         mPairwise(this.matrix, row, col, val)
+    }
+
+    addAlt(name) {
+        super.addAlt(name)
+        mSquareAddPos(this.matrix)
     }
 
     priority() {

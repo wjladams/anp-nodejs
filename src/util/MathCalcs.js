@@ -77,6 +77,9 @@ export function vDist(v1, v2) {
 }
 
 export function mLargestEigen(mat, return_val=false, error=1e-10, maxcount=10000) {
+    if ((mat == null) || (mat.length == 0)) {
+        return []
+    }
     let v1 = vInit(mat.length, 1.0/mat.length)
     for(let i=0; i<maxcount; i++) {
         let v2 = mMultVec(mat, v1)
@@ -106,7 +109,7 @@ export function vNormalize(vec, inline=true) {
    for(let i=0; i < vec.length; i++) {
        sum += vec[i]
    }
-   if (sum != 0) {
+   if (sum != 0.0) {
        for(let i=0; i < vec.length; i++) {
            rval[i] = vec[i] / sum
        }
@@ -116,4 +119,15 @@ export function vNormalize(vec, inline=true) {
    } else {
        return rval
    }
+}
+
+export function mSquareAddPos(mat) {
+    let size = mat.length
+    let newRow = []
+    for(let i=0; i < size; i++) {
+        newRow.push(0)
+        mat[i].push(0)
+    }
+    newRow.push(1)
+    mat.push(newRow)
 }
