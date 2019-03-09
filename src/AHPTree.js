@@ -11,8 +11,29 @@ export class AHPTreeNode {
     }
 
     addChild() {
-        this.children.push(new AHPTreeNode(this.parentTree, this.altScores.length))
+        let rval = new AHPTreeNode(this.parentTree, this.altScores.length)
+        this.children.push(rval)
         this.childPrioritizer.addAlt(null)
+        return rval
+    }
+
+    pairwise(child1, child2, value) {
+        this.childPrioritizer.set(child1, child2, value)
+    }
+
+    setAltScore(alt, score) {
+        if (Number.isInteger(alt)) {
+            //We were passed the alternative as an integer position
+            if (alt < 0) {
+                throw "Alt index cannot be negative"
+            } else if (alt >= this.altScores.length) {
+                throw "Alt index cannot be larger than the number of alternatives"
+            }
+            this.altScores[alt] = score
+        } else {
+            //For now we do not allow non-integer refs to alternatives
+            throw "Alternative must be indexed by position"
+        }
     }
 
     addAlt(name) {

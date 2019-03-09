@@ -8,7 +8,9 @@ export class Pairwise extends Prioritizer {
     }
 
     set(row, col, val) {
-        mPairwise(this.matrix, row, col, val)
+        let rrow = this.indexOf(row)
+        let rcol = this.indexOf(col)
+        mPairwise(this.matrix, rrow, rcol, val)
     }
 
     addAlt(name) {

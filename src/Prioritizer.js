@@ -38,4 +38,14 @@ export class Prioritizer {
     priority() {
         return vNormalize(this.direct_data)
     }
+
+    indexOf(alt) {
+        if (Number.isInteger(alt)) {
+            //We are asking the index of something already an index, just return that
+            return alt
+        } else {
+            let rval = this.alts.indexOf(alt)
+            return rval
+        }
+    }
 }
