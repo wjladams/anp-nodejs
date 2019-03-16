@@ -1,4 +1,5 @@
 import { AHPTreeNode } from "../src/AHPTree";
+var fs = require('fs');
 
 test('basic node construction', () => {
     let node = new AHPTreeNode(null, 0)
@@ -50,4 +51,10 @@ test('synthesis with pairwise', () => {
     expect(scores[0]).toBeCloseTo((2*0.7+1*0.1)/3)
     expect(scores[1]).toBeCloseTo((2*0.5+1*0.4)/3)
     expect(scores[2]).toBeCloseTo((2*1.0 + 1*0.8)/3)
+})
+
+test('json parsing', () => {
+    var obj = JSON.parse(fs.readFileSync('tests/simple_tree.json', 'utf8'))
+    let node = AHPTreeNode.fromJSONObject(obj)
+    expect(node).toBeDefined()
 })

@@ -2,16 +2,16 @@ import { Pairwise } from "./Pairwise";
 import { vInit } from "./util/MathCalcs";
 
 export class AHPTreeNode {
-    constructor(parentTree, size) {
+    constructor(parentNode, size) {
         this.children = []
         this.childPrioritizer = new Pairwise(0)
         this.altPrioritizer = null
         this.altScores = vInit(size)
-        this.parentTree = parentTree
+        this.parentNode = parentNode
     }
 
     addChild() {
-        let rval = new AHPTreeNode(this.parentTree, this.altScores.length)
+        let rval = new AHPTreeNode(this.parentNode, this.altScores.length)
         this.children.push(rval)
         this.childPrioritizer.addAlt(null)
         return rval
@@ -73,5 +73,17 @@ export class AHPTreeNode {
             }
         }
         return this.altScores
+    }
+
+    static fromJSONObject(obj, parentNode) {
+        let size = 0
+        if (parentNode != null) {
+            //Get the size from the parent
+            size = nalts
+        } else {
+            //We are the first parent, so we have alt_names
+            size = obj.alt_names.length
+        }
+        let rval = new AHPTreeNode(parentNode, size)
     }
 }
