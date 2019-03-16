@@ -1,4 +1,4 @@
-import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen, mSquareAddPos} from "../src/util/MathCalcs";
+import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen, mSquareAddPos, prefHML} from "../src/util/MathCalcs";
 
 test('adds 1 + 2 to equal 3', () => {
   expect(1 + 2).toBe(3);
@@ -64,4 +64,13 @@ test('Add position to square matrix', ()=> {
   expect(m).toEqual([[1]])
   mSquareAddPos(m)
   expect(m).toEqual([[1, 0], [0, 1]])
+})
+
+test('hmlpref', () => {
+  expect(prefHML(0, 0)).toBe(0)
+  expect(prefHML(1, 0)).toBeNull()
+  expect(prefHML(0, 1)).toBeNull()
+  expect(prefHML(11, 12)).toBe(0)
+  expect(prefHML(10, 12)).toBe(-1)
+  expect(prefHML(15, 12)).toBe(1)
 })

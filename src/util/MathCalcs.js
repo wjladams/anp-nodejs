@@ -131,3 +131,47 @@ export function mSquareAddPos(mat) {
     newRow.push(1)
     mat.push(newRow)
 }
+
+/**
+ * Returns -2, -1, 0, 1, 2 describing how much better val1 is than val2
+ * -2 means val1 is much worse than val1
+ * -1 means val1 is worse than val1
+ * 0 means val1 is approximately equal to val1
+ * 1 means val1 is better than val1
+ * 2 means val1 is much better than val1
+ * @param {*} val1 
+ * @param {*} val2 
+ */
+export function prefHML(val1, val2, lowCutoff=1.1, medCutoff=2.1) {
+    if (val1 == 0) {
+        if (val2 == 0) {
+            return 0
+        } else {
+            //val1=0 and val2!=0
+            //they are not comparable
+            return null
+        }
+    } else if (val2 == 0) {
+        //val2=0 and val1!=0
+        //not comparable
+        return null
+    } else {
+        let ratio = Math.abs(val1 / val2)
+        if (ratio < 1/medCutoff) {
+            //val1 is much worse than val2
+            return -2
+        } else if (ratio < 1/lowCutoff) {
+            //val1 is worse than val2
+            return -1
+        } else if (ratio < lowCutoff) {
+            //val1 is approx the same as val2
+            return 0
+        } else if (ratio < medCutoff) {
+            //val1 is better than val2
+            return 1
+        } else {
+            //val1 is much better than val2
+            return 2
+        }
+    }
+}
