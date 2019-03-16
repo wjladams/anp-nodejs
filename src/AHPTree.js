@@ -1,17 +1,18 @@
 import { Pairwise } from "./Pairwise";
 import { vInit } from "./util/MathCalcs";
+import { Prioritizer } from "./Prioritizer";
 
-export class AHPTreeNode {
+export class AHPTreeNode extends Prioritizer {
     constructor(parentNode, size) {
+        super(size)
         this.children = []
         this.childPrioritizer = new Pairwise(0)
-        this.altPrioritizer = null
-        this.altScores = vInit(size)
+        //this.altPrioritizer = null
         this.parentNode = parentNode
     }
 
     addChild() {
-        let rval = new AHPTreeNode(this.parentNode, this.altScores.length)
+        let rval = new AHPTreeNode(this.parentNode, this.alts.length)
         this.children.push(rval)
         this.childPrioritizer.addAlt(null)
         return rval
@@ -26,10 +27,10 @@ export class AHPTreeNode {
             //We were passed the alternative as an integer position
             if (alt < 0) {
                 throw "Alt index cannot be negative"
-            } else if (alt >= this.altScores.length) {
+            } else if (alt >= this.nalts()) {
                 throw "Alt index cannot be larger than the number of alternatives"
             }
-            this.altScores[alt] = score
+            this.direct_data[alt] = score
         } else {
             //For now we do not allow non-integer refs to alternatives
             throw "Alternative must be indexed by position"
@@ -37,18 +38,15 @@ export class AHPTreeNode {
     }
 
     addAlt(name) {
+        super.addAlt(name)
         for(var child in this.children) {
             this.child.addAlt(name)
         }
         if (this.altPrioritizer != null) {
             this.altPrioritizer.addAlt(name)
         }
-        this.altScores.push(0)
     }
 
-    nalts() {
-        return this.altScores.length
-    }
 
     nkids() {
         return this.children.length
@@ -57,22 +55,22 @@ export class AHPTreeNode {
     synthesize() {
         if (this.children.length == 0) {
             //No children, simply return altScores upwards
-            return this.altScores
+            return this.direct_data
         }
         //Alright, let's synthesize, first I need to zero out the scores
-        let nalts = this.altScores.length
+        let nalts = this.direct_data.length
         for(let i=0; i < nalts; i++) {
-            this.altScores[i] = 0
+            this.direct_data[i] = 0
         }
         //Now let's synthesize each child
         let childScores = this.childPrioritizer.priority()
         for(let i=0; i < this.children.length; i++) {
             let vals = this.children[i].synthesize()
             for(let alt=0; alt < nalts; alt++) {
-                this.altScores[alt] += childScores[i] * vals[alt]
+                this.direct_data[alt] += childScores[i] * vals[alt]
             }
         }
-        return this.altScores
+        return this.direct_data
     }
 
     static fromJSONObject(obj, parentNode) {
@@ -85,5 +83,8 @@ export class AHPTreeNode {
             size = obj.alt_names.length
         }
         let rval = new AHPTreeNode(parentNode, size)
+
+        // Do much more stuff
+        return rval
     }
 }

@@ -35,6 +35,10 @@ export class Prioritizer {
         this.direct_data.push(0)
     }
 
+    nalts() {
+        return this.alts.length
+    }
+    
     priority() {
         return vNormalize(this.direct_data)
     }

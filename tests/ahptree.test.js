@@ -57,4 +57,6 @@ test('json parsing', () => {
     var obj = JSON.parse(fs.readFileSync('tests/simple_tree.json', 'utf8'))
     let node = AHPTreeNode.fromJSONObject(obj)
     expect(node).toBeDefined()
+    expect(node.nalts()).toEqual(3)
+    expect(node.alt)
 })
