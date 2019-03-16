@@ -2,17 +2,17 @@
     "name" : "The main decision",
     "alt_names" : ["alt1", "alt2", "alt3"],
 
-    "kids": [
+    "children": [
         {"name": "crit1", "alt_scores": [1, 0.5, 0.25]},
         {"name": "crit2", "alt_scores": [1, 0.25, 0]},
         {"name": "crit3", "alt_scores": [0.1, 0.5, 0.75]},
         {"name": "crit4", "alt_scores": [0.51, 0.5, 1.0]}
     ],
 
-    "pw": [
-        [1, 2, 6, 10],
-        [0.5, 1, 3, 5],
-        [0.16666667, 0.33333333, 1, 2],
-        [0.1, 0.2, 0.5, 1]
+    "pairwise": [
+        [1, 2, 6, 24],
+        [0, 1, 3, 12],
+        [0, 0, 1, 4],
+        [0, 0, 0, 1]
     ]
 }

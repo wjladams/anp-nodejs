@@ -11,11 +11,13 @@ export class AHPTreeNode extends Prioritizer {
         this.parentNode = parentNode
     }
 
-    addChild() {
-        let rval = new AHPTreeNode(this.parentNode, this.alts.length)
-        this.children.push(rval)
+    addChild(childNode=null) {
+        if (childNode == null) {
+            childNode = new AHPTreeNode(this.parentNode, this.alts.length)
+        }
+        this.children.push(childNode)
         this.childPrioritizer.addAlt(null)
-        return rval
+        return childNode
     }
 
     pairwise(child1, child2, value) {
@@ -48,7 +50,7 @@ export class AHPTreeNode extends Prioritizer {
     }
 
 
-    nkids() {
+    nchildren() {
         return this.children.length
     }
 
@@ -77,14 +79,52 @@ export class AHPTreeNode extends Prioritizer {
         let size = 0
         if (parentNode != null) {
             //Get the size from the parent
-            size = nalts
+            size = parentNode.nalts()
         } else {
             //We are the first parent, so we have alt_names
             size = obj.alt_names.length
         }
         let rval = new AHPTreeNode(parentNode, size)
 
-        // Do much more stuff
+        if (parentNode != null) {
+            //We have a parent node, we should use their alternative names
+            rval.alts = parentNode.alts
+        } else {
+            //We need alt names from the object
+            rval.alts = obj.alt_names
+        }
+        // Get children
+        if (obj.children != null) {
+            for (let i=0; i < obj.children.length; i++) {
+                let kid = AHPTreeNode.fromJSONObject(obj.children[i], rval)
+                rval.addChild(kid)
+            }
+            //Bottom level ones should probably have a pairwise matrix
+            if (obj.pairwise == null) {
+                throw "We need a pairwise matrix for node "+obj.name
+            } else {
+                let nkids = obj.children.length
+                for (let row=0; row < nkids; row++) {
+                    for (let col=0; col < nkids; col++) {
+                        if (row != col) {
+                            let val = obj.pairwise[row][col]
+                            if (val >= 1) {
+                                //Only set for values >= 1, the others are reciprocals
+                                rval.childPrioritizer.set(row, col, val)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            //Bottom level alts can have scores
+            if (obj.alt_scores != null) {
+                if (obj.alt_scores.length != rval.nalts()) {
+                    throw "Alt scores of wrong length"
+                }
+                rval.direct_data = obj.alt_scores
+            }
+        }
         return rval
     }
 }
