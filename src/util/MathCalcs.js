@@ -175,3 +175,36 @@ export function prefHML(val1, val2, lowCutoff=1.1, medCutoff=2.1) {
         }
     }
 }
+
+/**
+ * Returns a list of 2 items.  The first item is the index of the best
+ * alternative (if there is a tie, it returns the first index that was
+ * maximum).  The second thing it returns is the strength of that "best"
+ * 0=essentially the same as the 2nd best
+ * 1=somewhat better than the 2nd best
+ * 2=much better than the 2nd best
+ */
+export function bestHMLIndex(priority) {
+    let nalts = priority.length
+    if (nalts == 0) {
+        return null
+    } else if (nalts == 1) {
+        return [0, 0]
+    }
+    //Okay we handled the edge cases, now let's look
+    //for the best and second best index
+    let bestIndex=0
+    let bestValue=priority[0]
+    let secondIndex=1
+    let secondValue=priority[1]
+    for(let i=1; i < priority.length; i++) {
+        if (priority[i] > bestValue) {
+            secondIndex = bestIndex
+            secondValue = bestValue
+            bestIndex = i
+            bestValue = priority[i]
+        }
+    }
+    let pref = prefHML(bestValue, secondValue)
+    return [bestIndex, pref]
+}

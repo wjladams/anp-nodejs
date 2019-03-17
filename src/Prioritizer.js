@@ -1,4 +1,4 @@
-import { vNormalize } from "./util/MathCalcs";
+import { vNormalize, bestHMLIndex } from "./util/MathCalcs";
 
 
 export class Prioritizer {
@@ -40,7 +40,7 @@ export class Prioritizer {
     }
     
     priority() {
-        return vNormalize(this.direct_data)
+        return vNormalize(this.direct_data, false)
     }
 
     indexOf(alt) {
@@ -51,5 +51,17 @@ export class Prioritizer {
             let rval = this.alts.indexOf(alt)
             return rval
         }
+    }
+
+    /**
+     * Returns a list of 2 items.  The first item is the index of the best
+     * alternative (if there is a tie, it returns the first index that was
+     * maximum).  The second thing it returns is the strength of that "best"
+     * 0=essentially the same as the 2nd best
+     * 1=somewhat better than the 2nd best
+     * 2=much better than the 2nd best
+     */
+    bestAltIndex() {
+        return bestHMLIndex(this.priority())
     }
 }

@@ -1,4 +1,4 @@
-import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen, mSquareAddPos, prefHML} from "../src/util/MathCalcs";
+import { vInit, vNormalize, mId, mInit, mMultVec, mLargestEigen, mSquareAddPos, prefHML, bestHMLIndex} from "../src/util/MathCalcs";
 
 test('adds 1 + 2 to equal 3', () => {
   expect(1 + 2).toBe(3);
@@ -73,4 +73,13 @@ test('hmlpref', () => {
   expect(prefHML(11, 12)).toBe(0)
   expect(prefHML(10, 12)).toBe(-1)
   expect(prefHML(15, 12)).toBe(1)
+})
+
+test('bestHMLIndex', () => {
+  expect(bestHMLIndex([0, 0, 0])).toEqual([0, 0])
+  expect(bestHMLIndex([-1, 0, 0])).toEqual([1, null])
+  expect(bestHMLIndex([1, 0, 0])).toEqual([0, null])
+  expect(bestHMLIndex([1, 1.001, 0])).toEqual([1, 0])
+  expect(bestHMLIndex([1, 1.8, 0])).toEqual([1, 1])  
+  expect(bestHMLIndex([1, 5, 0])).toEqual([1, 2])  
 })
