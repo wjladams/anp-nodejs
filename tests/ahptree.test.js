@@ -67,4 +67,5 @@ test('json parsing', () => {
     expect(childPris[0]/childPris[1]).toBeCloseTo(node.childPrioritizer.matrix[0][1])
     expect(childPris[1]/childPris[2]).toBeCloseTo(node.childPrioritizer.matrix[1][2])
     expect(childPris[2]/childPris[3]).toBeCloseTo(node.childPrioritizer.matrix[2][3])
+    expect(node.childrenNames()).toEqual(['crit1', 'crit2', 'crit3', 'crit4'])
 })

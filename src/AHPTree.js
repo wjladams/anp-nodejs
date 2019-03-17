@@ -3,9 +3,10 @@ import { vInit } from "./util/MathCalcs";
 import { Prioritizer } from "./Prioritizer";
 
 export class AHPTreeNode extends Prioritizer {
-    constructor(parentNode, size) {
+    constructor(parentNode, size, name=null) {
         super(size)
         this.children = []
+        this.name = name
         this.childPrioritizer = new Pairwise(0)
         //this.altPrioritizer = null
         this.parentNode = parentNode
@@ -54,6 +55,20 @@ export class AHPTreeNode extends Prioritizer {
         return this.children.length
     }
 
+    childrenNames() {
+        if (this.children == null) {
+            return null
+        } else if (this.children.length == 0) {
+            return []
+        } else {
+            let rval = []
+            for(let i=0; i < this.children.length; i++) {
+                rval.push(this.children[i].name)
+            }
+            return rval
+        }
+    }
+
     synthesize() {
         if (this.children.length == 0) {
             //No children, simply return altScores upwards
@@ -84,7 +99,7 @@ export class AHPTreeNode extends Prioritizer {
             //We are the first parent, so we have alt_names
             size = obj.alt_names.length
         }
-        let rval = new AHPTreeNode(parentNode, size)
+        let rval = new AHPTreeNode(parentNode, size, obj.name)
 
         if (parentNode != null) {
             //We have a parent node, we should use their alternative names
